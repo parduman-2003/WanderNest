@@ -1,0 +1,68 @@
+<% layout('layouts/layout') %>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles/signUp.css">
+    <div class="signup-form-container">
+        <div class="signup-heading text-center">
+            <h3 class="mb-1">Sign Up to</h3>
+            <div class="wander-logo justify-content-center">
+                <span class="logo-text">Wander<span style="color: #FF385C;">Nest</span></span>
+            </div>
+        </div>
+
+
+        <form id="signupForm" action="/signup" method="POST" novalidate class="signup-form needs-validation">
+
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="user[username]" placeholder="Enter username" required>
+                <div class="invalid-feedback">Please enter a valid username.</div>
+            </div>
+
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="user[email]" placeholder="Enter email" required>
+                <div class="invalid-feedback">Please enter a valid email.</div>
+            </div>
+
+
+            <div class="form-group">
+                <label for="otp">OTP</label>
+                <input type="text" id="otp" name="otp" placeholder="Enter OTP here" required>
+                <button type="button" onclick="sendOtp()" style="margin-top: 5px;">Send OTP</button>
+                <button type="button" onclick="verifyOtp()" style="margin-top: 5px;">Verify OTP</button>
+                <div class="invalid-feedback" id="otpError">OTP is required</div>
+                <div id="otpMessage" style="color: green; margin-top: 5px;"></div>
+            </div>
+
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="user[password]" placeholder="Enter password" required>
+                <div class="invalid-feedback">Please enter a password.</div>
+            </div>
+
+
+            <div class="form-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="password" id="confirmPassword" placeholder="Re-enter password" required>
+                <div class="invalid-feedback" id="confirmError">Passwords do not match.</div>
+            </div>
+
+
+            <div class="form-group">
+                <label for="captchaInput">Enter the Captcha</label>
+                <div id="captchaDisplay" class="captcha-box"></div>
+                <button type="button" onclick="generateCaptcha()">Refresh Captcha</button>
+                <input type="text" id="captchaInput" placeholder="Enter captcha here" required>
+                <button type="button" onclick="verifyCaptcha()" style="margin-top: 5px;">Verify Captcha</button>
+                <div class="invalid-feedback" id="captchaError">Captcha does not match.</div>
+                <div id="captchaMessage" style="color: green; margin-top: 5px;"></div>
+            </div>
+
+
+            <button class="signup-btn" type="submit">Sign Up</button>
+        </form>
+    </div>
+
+    <script src="/js/signUp.js"></script>

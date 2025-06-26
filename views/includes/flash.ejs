@@ -1,0 +1,26 @@
+<link rel="stylesheet" href="/styles/flash.css">
+<% if (success && success.length > 0) { %>
+  <div class="custom-toast flash-success d-flex align-items-center shadow-sm">
+    <i class="fa-solid fa-circle-check flash-icon"></i>
+    <span class="flash-text"><%= success %></span>
+    <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% } %>
+
+<% if (error && error.length > 0) { %>
+  <div class="custom-toast flash-error d-flex align-items-center shadow-sm">
+    <i class="fa-solid fa-circle-exclamation flash-icon"></i>
+    <span class="flash-text"><%= error %></span>
+    <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% } %>
+
+<script>
+  setTimeout(() => {
+    document.querySelectorAll('.custom-toast').forEach(toast => {
+      toast.style.opacity = "0";
+      toast.style.transform = "translateY(-10px)";
+      setTimeout(() => toast.remove(), 500);
+    });
+  }, 4000);
+</script>

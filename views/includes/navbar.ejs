@@ -1,0 +1,75 @@
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles/navbar.css">
+<nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top shadow-sm">
+  <div class="container-fluid d-flex justify-content-between align-items-center">
+
+    
+    <div class="d-flex align-items-center gap-3">
+      <a class="navbar-brand wander-logo" href="/listing/aboutus">
+        <span class="logo-text">Wander<span style="color: #FF385C;">Nest</span></span>
+      </a>
+      
+      <a class="nav-link " href="/listing">
+        <i class="fa-solid fa-house-user fs-5"></i>
+      </a>
+    </div>
+
+   
+    <div class="me-auto ms-4 d-none d-md-flex" style="flex: 1;">
+      <form action="/listing/search" method="get" class="d-flex align-items-center w-50 mx-auto">
+        <input type="text" name="q" class="form-control search-input" placeholder="Search..." required>
+        <% if (categoryName) { %>
+          <input type="hidden" name="category" value="<%= categoryName %>">
+          <% } %>
+            <button type="submit" class="btn btn-pink ms-2">Search</button>
+      </form>
+    </div>
+
+   
+    <div class="d-flex align-items-center position-relative">
+      <% if (currentUser && !currentUser.isHost) { %>
+        <div class="settings-dropdown position-relative ms-3">
+          <i class="fa-solid fa-bars settings-icon" id="navbarSettingsToggle"></i>
+          <div class="dropdown-menu" id="navbarSettingsMenu">
+            <a href="/edit-account-info" class="dropdown-item">My Account</a>
+            <a href="/wishlist" class="dropdown-item">My Wishlist</a>
+            <a href="/booking/dashboard" class="dropdown-item">My Bookings</a>
+            <a href="/logout" class="dropdown-item">Logout</a>
+          </div>
+          
+        </div>
+        <% } %>
+      <% if (!currentUser && !hideAuthButtons) { %>
+        <a href="/signUp" class="me-2">
+          <button class="signup-btn" type="button">Sign Up</button>
+        </a>
+        <a href="/login">
+          <button class="signup-btn" type="button">Login</button>
+        </a>
+        <% } else if (currentUser) { %>
+          <a href="/navbar-data" class="ms-3 text-decoration-none text-dark me-3">
+            <i class="fa-solid fa-bell fs-5"></i>
+          </a>
+          <% if (currentUser.isHost && currentPath !=='/profile' ) { %>
+            <a href="/profile" class="profile-link">
+              <% if (user?.profileImage?.url) { %>
+                <img src="<%= user.profileImage.url %>" alt="Profile Picture" class="nav-profile-pic" />
+                <% } else { %>
+                  <div class="nav-profile-placeholder">
+                    <%= user?.username?.charAt(0).toUpperCase() || 'U' %>
+                  </div>
+                  <% } %>
+            </a>
+            <% } else if (!currentUser.isHost) { %>
+              <a href="/become-a-host">
+                <button class="signup-btn" type="button">Create Profile</button>
+              </a>
+              <% } %>
+                <% } %>
+    </div>
+  </div>
+</nav>
+
+
+<script src="/js/navbar.js">
+</script>

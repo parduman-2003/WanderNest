@@ -1,0 +1,377 @@
+<% layout('layouts/layout') %>
+    <link rel="stylesheet" href="/styles/show.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/show.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <% if (typeof bookNow !=='undefined' && bookNow) { %>
+        <script>
+            const modal = new bootstrap.Modal(document.getElementById('bookingModal'));
+            modal.show();
+        </script>
+        <% } %>
+            <div class="card landscape-card container">
+                <div class="card-img-title-info">
+                    <div>
+                        <h2 class="card-title mb-1 fw-bold" style="width: 70%;">
+                            <%= listingData.title %>
+                        </h2>
+                    </div>
+                    <div>
+                        <% let imageUrl; if (typeof listingData.image==="string" ) { imageUrl=listingData.image.trim();
+                            } else if (listingData.image && listingData.image.url) {
+                            imageUrl=listingData.image.url.trim(); } else {
+                            imageUrl="/images/photo-1520250497591-112f2f40a3f4.avif" ; } %>
+
+                            <div class="image-wrapper">
+                                <img src="<%= imageUrl %>" class="card-img-top listing-img" alt="listing image">
+
+                                <form action="/wishlist/<%= listingData._id %>/add" method="POST">
+                                    <button type="submit" class="heart-btn">
+                                        <i class="fa-regular fa-heart"></i>
+                                    </button>
+                                </form>
+                            </div>
+                    </div>
+                    <div>
+                        <h5 class="mb-2 text-muted">
+                            <%= listingData.location %>, <%= listingData.country %>
+                        </h5>
+                        <h6 class="mb-2 text-muted" style="font-size: smaller; margin-left: 1rem;"> <i
+                                class="fa-regular fa-star"></i>
+                            <%= averageRating %> ·
+                                <%= listingData.reviews.length %> reviews
+                        </h6>
+                    </div>
+                    <% if (!(currentUser && currentUser._id.toString()===listingData.owner._id.toString())) { %>
+                        <div class="reservation-card">
+                            <div class="price-line mb-2">
+                                <strong>₹<%= listingData.price %>/night</strong>
+                            </div>
+
+                            <div class="date-box d-flex mb-3 gap-2">
+                                <div>
+                                    <div class="date-label">Check-in</div>
+                                    <input id="checkin" type="date" class="form-control form-control-sm" />
+                                </div>
+                                <div>
+                                    <div class="date-label">Checkout</div>
+                                    <input id="checkout" type="date" class="form-control form-control-sm" />
+                                </div>
+                            </div>
+
+                            <button class="reserve-btn" data-bs-toggle="modal" data-bs-target="#bookingModal"
+                                onclick="calculateSummary()">
+                                Reserve
+                            </button>
+                        </div>
+
+                        <!-- Booking Modal -->
+                        <div class="modal fade" id="bookingModal" tabindex="-1" aria-labelledby="bookingModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content rounded-4 p-3"
+                                    style="border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+
+                                    <!-- Listing Info -->
+                                    <div class="d-flex align-items-start gap-3 mb-3">
+                                        <img src="<%= listingData.image?.url %>" alt="Listing"
+                                            style="width: 80px; height: 80px; border-radius: 10px; object-fit: cover;">
+                                        <div>
+                                            <h6 class="mb-1 fw-semibold">
+                                                <%= listingData.title %>
+                                            </h6>
+                                            <div class="text-muted small">Entire villa</div>
+                                            <div class="d-flex align-items-center gap-1 small text-muted">
+                                                <i class="fa fa-star text-warning"></i>
+                                                <strong>
+                                                    <%= listingData.rating %>
+                                                </strong> (<%= listingData.numReviews %> reviews)
+                                                    <span>&bull;</span>
+                                                    <span>Superhost</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <hr />
+
+                                    <!-- Total Section -->
+                                    <div class="mb-2">
+                                        <h6 class="fw-semibold mb-2">Your total</h6>
+                                        <div class="text-muted small mb-1">Price details</div>
+
+                                        <!-- Price x Nights -->
+                                        <div class="d-flex justify-content-between">
+                                            <div>₹<span id="pricePerNight">
+                                                    <%= listingData.price.toFixed(2) %>
+                                                </span> x <span id="nightsCalc">0</span> nights</div>
+                                            <div>₹<span id="subtotal">0</span></div>
+                                        </div>
+
+                                        <!-- Taxes -->
+                                        <div class="d-flex justify-content-between">
+                                            <div>Taxes</div>
+                                            <div>₹<span id="taxes">0</span></div>
+                                        </div>
+
+                                        <hr />
+
+                                        <!-- Total -->
+                                        <div class="d-flex justify-content-between fw-semibold">
+                                            <div>Total (<span class="text-decoration-underline">INR</span>)</div>
+                                            <div>₹<span id="totalAmount">0</span></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="text-muted small mt-2">
+                                        All charges will be charged on check-in date.
+                                    </div>
+
+
+                                    <!-- Footer -->
+                                    <div class="mt-4">
+                                        <form id="bookingForm" action="/booking/<%= listingData._id %>/confirm"
+                                            method="GET">
+                                            <input type="hidden" name="checkin" id="formCheckin" />
+                                            <input type="hidden" name="checkout" id="formCheckout" />
+                                            <input type="hidden" name="total" id="formTotal" />
+
+                                            <!-- Your modal content goes here (listing info, total section, etc.) -->
+
+                                            <button type="button" class="btn btn-primary w-100"
+                                                onclick="submitBookingForm()">Continue</button>
+                                        </form>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <% } %>
+
+                </div>
+                <div class="card-info">
+                    <hr noshade="#333333d7" class="hr">
+
+                    <a href="/host/<%= owner._id %>?returnTo=<%= encodeURIComponent(returnTo) %>"
+                        class="text-decoration-none text-dark">
+                        <div class="d-flex align-items-center gap-3 mt-4" style="width:50%;">
+                            <div class="profile-picture">
+                                <% if (owner && owner.profileImage && owner.profileImage.url) { %>
+                                    <div class="profile-img-wrapper">
+                                        <img src="<%= owner.profileImage.url %>"
+                                            alt="<%= owner.username %>'s profile picture">
+                                    </div>
+                                    <% } else { %>
+                                        <div class="profile-img-wrapper">
+                                            <div class="profile-initial">
+                                                <%= owner.username.charAt(0).toUpperCase() %>
+                                            </div>
+                                        </div>
+                                        <% } %>
+                            </div>
+                            <div>
+                                <p class="mb-0 fw-bold">Hosted by <%= owner.username %>
+                                </p>
+                                <small class="text-muted">Superhost · 5 years hosting</small>
+                            </div>
+                        </div>
+                    </a>
+
+                    <hr noshade="#333333d7" class="hr">
+
+                    <hr noshade="#333333d7" class="hr">
+                    <strong>About This Space</strong>
+                    <% const maxLength=150; %>
+                        <% const isLong=listingData.description.length> maxLength; %>
+                            <% const shortDesc=listingData.description.substring(0, maxLength); %>
+
+                                <p>
+                                    <span id="shortDesc">
+                                        <%= isLong ? shortDesc + "..." : listingData.description %>
+                                    </span>
+                                    <% if (isLong) { %>
+                                        <span id="fullDesc" style="display:none;">
+                                            <%= listingData.description %>
+                                        </span>
+                                        <button id="toggleDescBtn">Show More</button>
+                                        <% } %>
+                                </p>
+                                <hr noshade="#333333d7" class="hr">
+
+                                <div class="d-flex justify-content-between align-items-center mt-4 flex-wrap gap-2"
+                                    style="  position: absolute;top:0.5rem; right:2rem; width: 5.5rem; display: flex; justify-content: space-between;">
+                                    <% if (currentUser && currentUser._id.toString()===listingData.owner._id.toString())
+                                        { %>
+                                        <div class="position-relative">
+                                            <i class="fa-solid fa-bars settings-icon" id="listingSettingsToggle"></i>
+                                            <div class="dropdown-menu" id="listingSettingsMenu" style="display: none; position: absolute; right: 0; top: 30px; background-color: #fff;
+            border: 1px solid #ccc; border-radius: 8px; padding: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1); z-index: 1000; min-width: 120px;">
+                                                <a href="/listing/<%= listingData.id %>/edit"
+                                                    class="dropdown-item">Edit</a>
+                                                <button class="dropdown-item" data-bs-toggle="modal"
+                                                    data-bs-target="#confirmDeleteModal">Delete</button>
+                                            </div>
+
+                                        </div>
+                                        <% } %>
+
+                                            <% if (returnTo) { %>
+                                                <a href="<%= returnTo %>" class="btn btn-sm settings-icon"
+                                                    style="border: none;"><i class="fa-solid fa-arrow-left"
+                                                        style="color:red;"></i></a>
+                                                <% } else { %>
+                                                    <a href="/listing" class="btn btn-sm settings-icon"
+                                                        style="border: none;"><i class="fa-solid fa-arrow-left"
+                                                            style="color: red;"></i></a>
+                                                    <% } %>
+                                </div>
+
+                </div>
+            </div>
+            <!-- Review Section -->
+            <hr noshade="#333333d7">
+            <div class="container mb-5">
+                <button class="btn btn-danger mb-3" id="toggleReviewFormBtn">Leave a Review</button>
+
+                <div id="reviewFormContainer" style="display: none;">
+                    <form action="/listing/<%= listingData.id %>/reviews" method="post" novalidate
+                        class="needs-validation">
+                        <fieldset class="starability-slot mb-3">
+                            <legend>Rating:</legend>
+                            <% for(let i=1; i <=5; i++) { %>
+                                <input type="radio" id="rate<%= i %>" name="review[rating]" value="<%= i %>">
+                                <label for="rate<%= i %>">
+                                    <%= i %> star
+                                </label>
+                                <% } %>
+                        </fieldset>
+                        <div class="mb-3">
+                            <label for="comment">Comments</label>
+                            <textarea name="review[comment]" id="comment" cols="50" rows="4" class="form-control"
+                                required></textarea>
+                        </div>
+                        <button class="btn btn-dark mb-3 mt-2">Submit</button>
+                    </form>
+                </div>
+                <hr noshade="#333333d7">
+                <h3>Reviews</h3>
+                <hr noshade="#333333d7">
+                <% if (listingData.reviews && listingData.reviews.length> 0) { %>
+                    <div class="row">
+                        <% listingData.reviews.forEach(review=> {
+                            const maxLength = 200;
+                            const isLong = review.comment.length > maxLength;
+                            const trimmed = review.comment.substring(0, maxLength);
+                            %>
+                            <div class="card col-md-5 m-2 p-3 shadow-sm border-0">
+                                <div class="d-flex align-items-center gap-2 mb-1">
+                                    <% if (review.author?.profileImage?.url) { %>
+                                        <img src="<%= review.author.profileImage.url %>"
+                                            alt="<%= review.author.username %>'s image"
+                                            style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover;">
+                                        <% } else { %>
+                                            <div
+                                                style="width: 32px; height: 32px; border-radius: 50%; background-color: #ccc; display: flex; align-items: center; justify-content: center; font-weight: bold;">
+                                                <%= review.author?.username?.charAt(0).toUpperCase() || "A" %>
+                                            </div>
+                                            <% } %>
+                                                <strong>
+                                                    <%= review.author?.username || "Anonymous" %>
+                                                </strong>
+                                </div>
+
+                                <p class="starability-result" data-rating="<%= review.rating %>">⭐ <%= review.rating %>
+                                        /5</p>
+                                <p class="comment">
+                                    <%= isLong ? trimmed + "..." : review.comment %>
+                                        <% if (isLong) { %>
+                                            <button class="btn btn-sm btn-link show-more-btn"
+                                                data-comment="<%= review.comment.replace(/" /g, '&quot;' ) %>">Show
+                                                More</button>
+                                            <% } %>
+                                </p>
+                                <small class="text-muted"><i class="fa-regular fa-calendar-days"></i>
+                                    <%= new Date(review.createdAt).toDateString() %>
+                                </small>
+
+                                <% if (currentUser && review.author &&
+                                    currentUser._id.toString()===review.author._id.toString()) { %>
+                                    <form
+                                        action="/listing/<%= listingData._id %>/reviews/<%= review._id %>?_method=DELETE"
+                                        method="post" class="mt-2">
+                                        <button class="btn btn-sm btn-outline-danger">Delete</button>
+                                    </form>
+                                    <% } %>
+                            </div>
+                            <% }) %>
+                    </div>
+                    <% } else { %>
+                        <p>No reviews yet. Be the first to leave one!</p>
+                        <% } %>
+            </div>
+            <!-- Show More Modal -->
+            <div class="modal fade" id="reviewModal" tabindex="-1" role="dialog" aria-labelledby="reviewModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-scrollable" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Full Review</h5>
+                        </div>
+                        <div class="modal-body" id="modalReviewContent"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Delete Confirmation Modal -->
+            <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog"
+                aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Confirm Deletion</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span>&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you want to delete this listing? This action cannot be undone.
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <form action="/listing/<%= listingData.id %>?_method=DELETE" method="post">
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script>
+                function submitBookingForm() {
+                    const checkin = new Date(document.getElementById('checkin').value);
+                    const checkout = new Date(document.getElementById('checkout').value);
+                    const pricePerNight = parseFloat(document.getElementById('pricePerNight').innerText);
+                    const nights = (checkout - checkin) / (1000 * 60 * 60 * 24);
+                    const taxRate = 0.1575;
+
+                    if (nights <= 0 || isNaN(nights)) {
+                        alert("Please select valid check-in and check-out dates.");
+                        return;
+                    }
+
+                    const subtotal = pricePerNight * nights;
+                    const taxes = Math.round(subtotal * taxRate);
+                    const total = subtotal + taxes;
+
+
+                    const listingId = "<%= listingData._id %>";
+                    const query = new URLSearchParams({
+                        checkin: checkin.toISOString(),
+                        checkout: checkout.toISOString(),
+                        total: total
+                    }).toString();
+
+                    window.location.href = `/booking/${listingId}/confirm?${query}`;
+                }
+              
+            </script>

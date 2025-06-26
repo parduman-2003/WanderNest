@@ -1,0 +1,263 @@
+.user-profile-container {
+    position: relative;
+    max-width: 1000px;
+    margin: 3rem auto;
+    background: #fff;
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #222;
+}
+
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.profile-img-wrapper {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid #ddd;
+}
+
+.profile-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profile-initial {
+    background-color: #f0f0f0;
+    width: 100%;
+    height: 100%;
+    font-size: 2rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #555;
+}
+
+.profile-info h2 {
+    margin: 0;
+    font-size: 1.8rem;
+}
+
+.profile-info p {
+    color: #888;
+}
+
+
+.profile-details p {
+    font-size: 1rem;
+    margin: 6px 0;
+}
+
+
+.btn-toggle {
+    border: none;
+    background-color: transparent;
+    color: #008489;
+    cursor: pointer;
+    padding: 0;
+    font-weight: 600;
+}
+
+
+.user-listings {
+    margin-top: 2rem;
+}
+
+.user-listings h5 {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+
+.listings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1rem;
+}
+
+.listing-card {
+    background: white;
+
+    border-radius: 12px;
+    padding: 1rem;
+    text-align: center;
+    box-shadow: 2px 2px #eee;
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.listing-card:hover {
+    transform: translateY(-4px);
+}
+
+.listing-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.listing-card p {
+    padding: 10px;
+    font-weight: 500;
+}
+
+.listing-card a {
+    text-decoration: none;
+    color: #333;
+}
+
+
+.listings-scroll-wrapper {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 1rem;
+    padding-bottom: 10px;
+    margin-bottom: 1rem;
+    -ms-overflow-style: none;
+
+    scrollbar-width: none;
+}
+
+.listings-scroll-wrapper::-webkit-scrollbar {
+    display: none;
+
+}
+
+.listings-scroll-wrapper::-webkit-scrollbar {
+    height: 8px;
+}
+
+.listings-scroll-wrapper::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 4px;
+}
+
+
+.listing-card {
+    flex: 0 0 auto;
+    width: 230px;
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: white;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    scroll-snap-align: start;
+    transition: transform 0.3s ease;
+}
+
+.listing-card:hover {
+    transform: translateY(-3px);
+}
+
+.listing-card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+
+.listing-card p {
+    padding: 8px 10px;
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+
+.review-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.review-card {
+    background-color: #fff;
+    padding: 1rem;
+    border-radius: 12px;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
+}
+
+.review-comment {
+    margin-bottom: 0.5rem;
+}
+
+.review-card p {
+    margin: 5px 0;
+}
+
+.review-scroll-wrapper {
+    display: flex;
+    overflow-x: auto;
+    gap: 1rem;
+    padding-bottom: 10px;
+    scroll-snap-type: x mandatory;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.review-scroll-wrapper::-webkit-scrollbar {
+    display: none;
+}
+
+.review-card {
+    flex: 0 0 300px;
+    max-width: 300px;
+    padding: 1rem;
+    border-radius: 12px;
+    background-color: #fff;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
+    scroll-snap-align: start;
+    transition: transform 0.3s ease;
+}
+
+.review-card:hover {
+    transform: translateY(-2px);
+}
+
+.review-card p {
+    margin: 5px 0;
+}
+
+.review-comment {
+    font-size: 0.95rem;
+    margin-top: 0.5rem;
+}
+
+
+
+.btn-outline-dark {
+    font-size: 0.9rem;
+    padding: 6px 12px;
+    border-radius: 6px;
+}
+
+
+@media (max-width: 600px) {
+    .profile-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .profile-img-wrapper {
+        width: 80px;
+        height: 80px;
+    }
+
+    .listing-card img {
+        height: 120px;
+    }
+
+    .review-grid {
+        grid-template-columns: 1fr;
+    }
+}

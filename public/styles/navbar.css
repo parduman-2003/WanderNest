@@ -1,0 +1,136 @@
+.wander-logo {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #222;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+}
+
+.wander-logo i {
+  color: #FF385C;
+  font-size: 1.3rem;
+}
+
+.logo-text {
+  letter-spacing: 1px;
+  color: #222;
+}
+
+.signup-btn,
+.btn-pink {
+  padding: 8px 16px;
+  background-color: #FF385C;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.signup-btn:hover,
+.btn-pink:hover {
+  background-color: #e03150;
+}
+
+.search-input {
+  border-radius: 25px;
+  padding: 0.5rem 1rem;
+  border: 1px solid #ccc;
+  flex-grow: 1;
+  min-width: 200px;
+  background-color: #f9f9f9;
+}
+
+.settings-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.settings-icon {
+  font-size: 18px;
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.settings-icon:hover {
+  color: #FF385C;
+  background-color: #f7f7f7;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  min-width: 180px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 0.5rem 0;
+  z-index: 1050;
+}
+
+
+.dropdown-item {
+  padding: 10px;
+  color: #333;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: 500;
+  display: block;
+}
+
+.dropdown-item:hover {
+  background-color: #f5f5f5;
+  color: #FF385C;
+}
+
+.nav-profile-pic {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid white;
+}
+
+.nav-profile-placeholder {
+  width: 36px;
+  height: 36px;
+  background-color: #333;
+  color: #fff;
+  font-weight: bold;
+  font-size: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+}
+
+.fa-solid {
+  color: rgb(249, 47, 47);
+  font-size: larger;
+}
+
+.nav-link {
+  color: #222222 !important;
+}
+
+.navbar {
+  background-color: white;
+}
+
+@media (max-width: 576px) {
+  .dropdown-menu {
+    right: 10px;
+    left: auto;
+  }
+}

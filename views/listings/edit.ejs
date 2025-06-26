@@ -1,0 +1,84 @@
+<% layout('layouts/layout') %>
+  <link rel="stylesheet" href="/styles/edit.css">
+  <div class="container">
+    <div class="edit-form-container">
+      <div class="edit-heading">
+        <h3>Create New Listing</h3><br>
+      </div>
+      <form action="/listing/<%= editlisting.id %>?_method=put" method="post" novalidate class=" needs-validation "
+        enctype="multipart/form-data">
+        <div class="form-grid mb-3">
+          <div class="form-group">
+            <label for="title" class="form-label">Title</label>
+            <input type="text" id="title" class="form-control" name="listing[title]" value="<%= editlisting.title %>"
+              placeholder="Enter your title" required>
+            <div class="invalid-feedback">Please provide a valid title.</div>
+          </div>
+
+          <div class="form-group">
+            <label for="price" class="form-label">Price (₹)</label>
+            <input type="number" id="price" class="form-control" name="listing[price]" value="<%= editlisting.price %>"
+              placeholder="Enter price" required>
+            <div class="invalid-feedback">Please provide a valid price.</div>
+          </div>
+        </div>
+
+        <div class="mb-3 form-group">
+          <label for="description" class="form-label">Description</label>
+          <textarea id="description" class="form-control" name="listing[description]"
+            value="<%= editlisting.description %>" placeholder="Enter description" rows="4" required></textarea>
+          <div class="invalid-feedback">Please provide a valid description.</div>
+        </div>
+
+        <div class="form-grid mb-3 form-group">
+          <div>
+            <label class="form-label">Current Image</label><br>
+            <img src="<%= editlisting.image.url %>" alt="current image" class="img-thumbnail"
+              style="width: 60%; max-width: 600px; height:150px; border-radius: 12px; margin-top: 10px;">
+          </div>
+
+          <div class="form-group">
+            <label for="image" class="form-label">Upload Image</label>
+            <input type="file" id="image" class="form-control" name="listing[image]" required>
+            <div class="invalid-feedback">Please upload an image.</div>
+          </div>
+        </div>
+        <div class="form-grid mb-3 form-group">
+          <div>
+            <label for="location" class="form-label">Location</label>
+            <input type="text" id="location" class="form-control" name="listing[location]"
+              value="<%= editlisting.location%>" required>
+            <div class="invalid-feedback">Please provide a valid location.</div>
+          </div>
+
+          <div class="form-group">
+            <label for="country" class="form-label">Country</label>
+            <input type="text" id="country" class="form-control" name="listing[country]"
+              value="<%= editlisting.country %>" required>
+            <div class="invalid-feedback">Please provide a valid country.</div>
+          </div>
+        </div>
+        <div class="mb-4 form-group">
+          <label for="category" class="form-label">Category</label>
+          <select id="category" class="form-select" name="listing[category]" value="<%= editlisting.category %>"
+            required>
+            <option value="">-- Select a category --</option>
+            <option value="rooms">Rooms</option>
+            <option value="farms">Farms</option>
+            <option value="pools">Pools</option>
+            <option value="castles">Castles</option>
+            <option value="camping">Camping</option>
+            <option value="mountains">Mountains</option>
+            <option value="arctic">Arctic</option>
+            <option value="iconic-cities">Iconic Cities</option>
+          </select>
+          <div class="invalid-feedback">Please select a valid category.</div>
+        </div>
+
+        <div class="text-end">
+          <button class="edit-btn" type="submit">Edit</button>
+        </div>
+      </form>
+    </div>
+
+  </div>

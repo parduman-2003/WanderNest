@@ -1,0 +1,40 @@
+<% layout('layouts/layout') %>
+  <link rel="stylesheet" href="/styles/index.css">
+  <div class="container-fluid px-3 px-md-4 mt-4">
+    <div class="row ">
+      <% for (let i=0; i < allListing.length; i++) { let listing=allListing[i]; %>
+        <div class="col-sm-6 col-md-4 col-lg-2 mb-4">
+          <div class="card listing-card h-100 shadow-sm">
+            <a href="/listing/<%= listing._id %>?returnTo=<%= encodeURIComponent(returnTo) %>">
+              <% let imageUrl; if (typeof listing.image==="string" ) { imageUrl=listing.image.trim(); } else if
+                (listing.image && listing.image.url) { imageUrl=listing.image.url.trim(); } else {
+                imageUrl="/images/photo-1520250497591-112f2f40a3f4.avif" ; } %>
+                <div class="image-wrapper">
+                  <img src="<%= imageUrl %>" class="card-img-top listing-img" alt="Listing Image">
+                  <form action="/wishlist/<%= listing._id %>/add" method="POST" class="wishlist-form">
+                    <button type="submit" class="heart-btn">
+                      <i class="fa-regular fa-heart"></i>
+                    </button>
+                  </form>
+                </div>
+            </a>
+            <div class="card-body">
+              <p class="card-text listing-location mb-1">
+                <i class="fas fa-map-marker-alt"></i>
+                <%= listing.location %>
+                  <i class="fa-regular fa-star ms-2"></i>
+                  <% if (listing.averageRating) { %>
+                    <%= listing.averageRating %>
+                      <% } else { %>
+                        No ratings yet
+                        <% } %>
+              </p>
+              <div class="listing-price">
+                ₹<%= listing.price.toLocaleString("en-IN") %>/night
+              </div>
+            </div>
+          </div>
+        </div>
+        <% } %>
+    </div>
+  </div>

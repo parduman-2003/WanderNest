@@ -1,0 +1,20 @@
+<% layout('layouts/layout') %>
+  <link rel="stylesheet" href="/styles/error.css">
+  <div class="container mt-5">
+    <div class="alert alert-danger shadow-lg rounded-3 p-4" role="alert">
+      <div class="d-flex align-items-center mb-3">
+        <i class="bi bi-exclamation-triangle-fill me-3 fs-2 text-danger"></i>
+        <h3 class="mb-0">Oops! Something Went Wrong</h3>
+      </div>
+      <hr>
+      <p class="mb-0 fs-5">
+        <%= error %>
+      </p>
+
+      <div class="mt-4">
+        <a href="/listing" class="btn btn-outline-danger">
+          <i class="bi bi-arrow-left-circle me-1"></i> Go Back Home
+        </a>
+      </div>
+    </div>
+  </div>

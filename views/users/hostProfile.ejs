@@ -1,0 +1,176 @@
+<% layout('layouts/layout') %>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles/hostProfile.css">
+    <div class="user-profile-container">
+
+        <a href="<%= returnTo %>" class="btn btn-outline-dark mb-4">
+            ← Back
+        </a>
+
+
+        <div class="profile-header">
+            <div class="profile-picture">
+                <% if (host.profileImage && host.profileImage.url) { %>
+                    <div class="profile-img-wrapper">
+                        <img src="<%= host.profileImage.url %>" alt="<%= host.username %>'s profile picture">
+                    </div>
+                    <% } else { %>
+                        <div class="profile-img-wrapper">
+                            <div class="profile-initial">
+                                <%= host.username.charAt(0).toUpperCase() %>
+                            </div>
+                        </div>
+                        <% } %>
+            </div>
+
+            <div class="profile-info">
+                <h2>
+                    <%= host.username %>
+                </h2>
+                <p>
+                    <%= host.bioTitle %>
+                </p>
+            </div>
+        </div>
+
+
+        <div class="profile-details">
+            <p><strong>About Me:</strong>
+                <%= host.aboutMe || "No bio added yet." %>
+            </p>
+            <% if (host.work) { %>
+                <p><strong>Work:</strong>
+                    <%= host.work %>
+                </p>
+                <% } %>
+                    <% if (host.interests?.length) { %>
+                        <p><strong>Interests:</strong>
+                            <%= host.interests.join(", ") %></p>
+        <% } %>
+        <% if (host.decadeBorn) { %>
+            <p><strong>Decade Born:</strong> <%= host.decadeBorn %></p>
+        <% } %>
+
+        <div id="more-details" style="display: none;">
+                                <% if (host.dreamDestination) { %>
+                                    <p><strong>Dream Destination:</strong>
+                                        <%= host.dreamDestination %>
+                                    </p>
+                                    <% } %>
+                                        <% if (host.favSong) { %>
+                                            <p><strong>Favorite Song:</strong>
+                                                <%= host.favSong %>
+                                            </p>
+                                            <% } %>
+                                                <% if (host.pets) { %>
+                                                    <p><strong>Pets:</strong>
+                                                        <%= host.pets %>
+                                                    </p>
+                                                    <% } %>
+                                                        <% if (host.school) { %>
+                                                            <p><strong>School:</strong>
+                                                                <%= host.school %>
+                                                            </p>
+                                                            <% } %>
+                                                                <% if (host.uselessSkill) { %>
+                                                                    <p><strong>Useless Skill:</strong>
+                                                                        <%= host.uselessSkill %>
+                                                                    </p>
+                                                                    <% } %>
+                                                                        <% if (host.tooMuchTime) { %>
+                                                                            <p><strong>I Spend Too Much Time
+                                                                                    On:</strong>
+                                                                                <%= host.tooMuchTime %>
+                                                                            </p>
+                                                                            <% } %>
+                                                                                <% if (host.funFact) { %>
+                                                                                    <p><strong>Fun Fact:</strong>
+                                                                                        <%= host.funFact %>
+                                                                                    </p>
+                                                                                    <% } %>
+        </div>
+
+        <button id="toggle-details-btn" class="btn-toggle">See More</button>
+    </div>
+
+    <hr>
+
+    <div class="user-listings">
+        <h5>
+            <%= host.username %>'s Listings
+        </h5>
+        <div class="listings-scroll-wrapper">
+            <% listings.forEach(listing=> { %>
+                <div class="listing-card">
+                    <a href="/listing/<%= listing._id %>?returnTo=<%= encodeURIComponent(returnTo) %>">
+                        <img src="<%= listing.image.url %>" alt="<%= listing.title %>" class="listing-img">
+                        <p>
+                            <%= listing.title %>
+                        </p>
+                    </a>
+                </div>
+                <% }) %>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="user-listings">
+        <h5>Reviews for <%= host.username %>
+        </h5>
+        <% if (reviews.length===0) { %>
+            <p>No reviews yet.</p>
+            <% } else { %>
+                <div class="review-scroll-wrapper">
+                    <% reviews.forEach(review=> { %>
+                        <div class="review-card">
+                            <% if (review.listing) { %>
+                                <p><strong>Review for:</strong>
+                                    <a href="/listing/<%= review.listing._id %>?returnTo=<%= encodeURIComponent(returnTo) %>"
+                                        class="text-decoration-none text-dark">
+                                        <%= review.listing.title %>
+
+                                </p>
+                                <% } %>
+
+
+                                    <div class="d-flex align-items-center gap-2 mb-2">
+                                        <% if (review.author?.profileImage?.url) { %>
+                                            <img src="<%= review.author.profileImage.url %>"
+                                                alt="<%= review.author.username %>'s image"
+                                                style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover;">
+                                            <% } else { %>
+                                                <div
+                                                    style="width: 32px; height: 32px; border-radius: 50%; background-color: #ccc; display: flex; align-items: center; justify-content: center; font-weight: bold;">
+                                                    <%= review.author?.username?.charAt(0).toUpperCase() || "A" %>
+                                                </div>
+                                                <% } %>
+                                                    <strong>
+                                                        <%= review.author?.username || "Anonymous" %>
+                                                    </strong>
+                                    </div>
+                                    </a>
+                                    <p class="starability-result" data-rating="<%= review.rating %>">⭐ <%= review.rating
+                                            %>
+
+                                            <p class="review-comment" data-full="<%= review.comment || '' %>">
+                                                <%= review.comment && review.comment.length> 50
+                                                    ? review.comment.slice(0, 50) + '...'
+                                                    : review.comment || 'No review content.' %>
+                                                    <% if (review.comment && review.comment.length> 50) { %>
+                                                        <span class="toggle-text"
+                                                            style="color: blue; cursor: pointer;">Show More</span>
+                                                        <% } %>
+                                            </p>
+
+                                            <small class="text-muted">
+                                                <i class="fa-regular fa-calendar-days"></i>
+                                                <%= new Date(review.createdAt).toDateString() %>
+                                            </small>
+                        </div>
+                        <% }) %>
+                </div>
+                <% } %>
+    </div>
+    </div>
+<script src="/js/hostProfile.js"></script>

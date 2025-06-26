@@ -1,0 +1,184 @@
+<% layout('layouts/layout') %>
+  <link rel="stylesheet" href="/styles/profile.css">
+  <div class="user-profile-container">
+
+
+    <div class="settings-dropdown d-flex align-items-center gap-3">
+
+      <i class="fa-solid fa-bars settings-icon" id="settingsToggle" style="font-size: 20px; cursor: pointer;"></i>
+
+
+      <a class="nav-link settings-icon" href="/listing/new" style="font-size: 20px; ">
+        <i class="fa-solid fa-plus text-danger"></i>
+      </a>
+
+
+      <div class="dropdown-menu" id="settingsMenu">
+        <a href="/edit-account-info" class="dropdown-item">My Account</a>
+        <a href="/wishlist" class="dropdown-item logout-item">My wishlist</a>
+        <a href="/booking/dashboard" class="dropdown-item logout-item">My Bookings</a>
+        <a href="/logout" class="dropdown-item logout-item">Logout</a>
+      </div>
+    </div>
+
+
+    <div class="profile-header">
+      <div class="profile-picture">
+        <% if (user.profileImage && user.profileImage.url) { %>
+          <div class="profile-img-wrapper">
+            <img src="<%= user.profileImage.url %>" alt="<%= user.username %>'s profile picture">
+            <a href="/edit" class="edit-icon" style="text-decoration: none;">
+              <i class="fa-solid fa-pen"></i>
+            </a>
+          </div>
+          <% } else { %>
+            <div class="profile-img-wrapper">
+              <div class="profile-initial">
+                <%= user.username.charAt(0).toUpperCase() %>
+              </div>
+              <a href="/edit" class="edit-icon">
+                <i class="fa-solid fa-pen"></i>
+              </a>
+            </div>
+            <% } %>
+      </div>
+
+      <div class="profile-info">
+        <h2>
+          <%= user.username %>
+        </h2>
+        <p>
+          <%= user.bioTitle %>
+        </p>
+      </div>
+    </div>
+
+    <div class="profile-details">
+      <p><strong>About Me:</strong>
+        <%= user.aboutMe %>
+      </p>
+      <p><strong>Work:</strong>
+        <%= user.work %>
+      </p>
+      <p><strong>Interests:</strong>
+        <%= user.interests%>
+      </p>
+      <p><strong>Decade Born:</strong>
+        <%= user.decadeBorn %>
+      </p>
+
+      <div id="more-details" style="display: none;">
+        <p><strong>Dream Destination:</strong>
+          <%= user.dreamDestination %>
+        </p>
+        <p><strong>Favorite Song:</strong>
+          <%= user.favSong %>
+        </p>
+        <p><strong>Pets:</strong>
+          <%= user.pets %>
+        </p>
+        <p><strong>School:</strong>
+          <%= user.school %>
+        </p>
+        <p><strong>Useless Skill:</strong>
+          <%= user.uselessSkill %>
+        </p>
+        <p><strong>Too Much Time On:</strong>
+          <%= user.tooMuchTime %>
+        </p>
+        <p><strong>Fun Fact:</strong>
+          <%= user.funFact %>
+        </p>
+      </div>
+
+      <button id="toggle-details-btn" class="btn-toggle">See More</button>
+    </div>
+
+    <hr>
+    <div class="user-listings">
+
+
+      <div class="user-listings">
+        <h5>
+          Your's Listings
+        </h5>
+        <% if (userReviews.length===0) { %>
+          <p>No Listings yet.</p>
+          <% } %>
+            <div class="listings-scroll-wrapper" id="listings-scroll-wrapper">
+              <% userListings.forEach(listing=> { %>
+                <div class="listing-card">
+                  <a href="/listing/<%= listing._id %>?returnTo=<%= encodeURIComponent(returnTo) %>">
+                    <img src="<%= listing.image.url %>" alt="<%= listing.title %>" class="listing-img" />
+                    <p>
+                      <%= listing.title %>
+                    </p>
+                  </a>
+                </div>
+                <% }) %>
+            </div>
+      </div>
+
+
+      <div class="user-listings">
+        <h5>
+          Your's reviews
+        </h5>
+        <% if (userReviews.length===0) { %>
+          <p>No reviews yet.</p>
+          <% } else { %>
+            <div class="review-scroll-wrapper" id="review-scroll-wrapper">
+              <% userReviews.forEach(review=> { %>
+                <div class="review-card">
+                  <% if (review.listing) { %>
+                    <a href="/listing/<%= review.listing._id %>?returnTo=<%= encodeURIComponent(returnTo) %>"
+                      class="text-decoration-none text-dark">
+                      <p><strong>Review for:</strong>
+
+                        <%= review.listing.title %>
+                      </p>
+                    </a>
+                    <% } %>
+
+                      <div class="reviewer-info">
+                        <% if (user.profileImage && user.profileImage.url) { %>
+                          <img class="review-img" src="<%= user.profileImage.url %>" alt="<%= user.username %>'s image">
+                          <% } else { %>
+                            <div class="review-initial-circle">
+                              <%=user.username.charAt(0).toUpperCase() || "H" %>
+                            </div>
+                            <% } %>
+                              <strong>
+                                <%=user.username || "Host" %>
+                              </strong>
+                      </div>
+
+                      <p class="starability-result" data-rating="<%= review.rating %>">⭐ <%= review.rating %>
+
+                          <p class="review-comment" data-full="<%= review.comment || '' %>">
+                            <%= review.comment && review.comment.length> 50
+                              ? review.comment.slice(0, 50) + '...'
+                              : review.comment || 'No review content.' %>
+                              <% if (review.comment && review.comment.length> 50) { %>
+                                <span class="toggle-text" style="color: blue; cursor: pointer;">Show More</span>
+                                <% } %>
+                          </p>
+
+                          <small class="text-muted">
+                            <i class="fa-regular fa-calendar-days"></i>
+                            <%= new Date(review.createdAt).toDateString() %>
+                          </small>
+                </div>
+                <% }) %>
+            </div>
+            <% } %>
+      </div>
+    </div>
+
+
+
+  </div>
+
+
+  <script src="/js/profile.js">
+  </script>

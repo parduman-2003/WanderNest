@@ -1,0 +1,42 @@
+<% layout('layouts/layout') %>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles/login.css">
+  <div class="signup-form-container">
+    <div class="signup-heading text-center">
+      <h3 class="mb-1">Login to</h3>
+      <div class="wander-logo justify-content-center">
+        <span class="logo-text">Wander<span style="color: #FF385C;">Nest</span></span>
+      </div>
+    </div>
+
+    <form action="/login" method="post" novalidate class="signup-form needs-validation">
+
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" placeholder="Enter username" required>
+        <div class="invalid-feedback">
+          Please enter a valid username.
+        </div>
+        <div class="valid-feedback">
+          Looks good!
+        </div>
+      </div>
+
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Enter password" required>
+        <div class="invalid-feedback">
+          Please enter a password.
+        </div>
+        <div class="valid-feedback">
+          Looks good!
+        </div>
+      </div>
+
+      <div style="text-align: right; margin-bottom: 10px;">
+        <a href="/forgot-password" style="font-size: 14px; color: #FF385C; text-decoration: none;">Forgot Password?</a>
+      </div>
+      <button class="signup-btn" type="submit">Login</button>
+    </form>
+  </div>

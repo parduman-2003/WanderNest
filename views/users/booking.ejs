@@ -1,0 +1,54 @@
+<% layout('layouts/layout') %>
+  <link rel="stylesheet" href="/styles/booking.css">
+
+  <div class="container-fluid mt-4 px-3 px-md-4">
+    <h2 class="bookings-heading">
+      <i class="fa-solid fa-suitcase text-danger"></i> Your Bookings
+    </h2>
+  </div>
+
+
+  <div class="container-fluid mt-3 px-3 px-md-4">
+    <% if (bookings.length===0) { %>
+      <p class="text-muted">No bookings found.</p>
+      <% } else { %>
+        <div class="row ">
+          <% bookings.forEach(b=> { %>
+            <div class="col-sm-6 col-md-4 col-lg-2 mb-4">
+              <div class="card listing-card h-100 shadow-sm">
+                <a href="/listing/<%= b.listing._id %>">
+                  <% let imageUrl; if (typeof b.listing.image==="string" ) { imageUrl=b.listing.image.trim(); } else if
+                    (b.listing.image && b.listing.image.url) { imageUrl=b.listing.image.url.trim(); } else {
+                    imageUrl="/images/photo-1520250497591-112f2f40a3f4.avif" ; } %>
+                    <div class="image-wrapper">
+                      <img src="<%= imageUrl %>" class="card-img-top listing-img" alt="listing image">
+                      <form class="cancel-booking-form" action="/booking/<%= b._id %>?_method=DELETE" method="POST">
+                        <button type="submit" class="action-btn" title="Cancel Booking">
+                          <i class="fa-solid fa-xmark-circle"></i>
+                        </button>
+                      </form>
+                    </div>
+                </a>
+                <div class="card-body">
+                  <h5 class="card-title">
+                    <%= b.listing.title %>
+                  </h5>
+                  <p class="card-text booking-date"><strong>Check-in:</strong>
+                    <%= b.checkin.toDateString() %>
+                  </p>
+                  <p class="card-text booking-date"><strong>Checkout:</strong>
+                    <%= b.checkout.toDateString() %>
+                  </p>
+                  <p class="card-text price-text">₹<%= b.total.toLocaleString("en-IN") %>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <% }) %>
+        </div>
+        <% } %>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="/js/booking.js">
+  </script>

@@ -1,0 +1,68 @@
+<% layout('layouts/layout') %>
+  <link rel="stylesheet" href="/styles/category.css">
+  <div class="container-fluid mt-4 px-3 px-md-4">
+    <h2 class="category-heading">
+      <% if (categoryName?.includes("rooms")) { %>
+        <i class="fa-solid fa-bed"></i> Rooms
+        <% } else if (categoryName?.includes("trending")) { %>
+          <i class="fa-solid fa-fire"></i> Trending
+          <% } else if (categoryName?.includes("arctic")) { %>
+            <i class="fa-solid fa-snowflake"></i> Arctic
+            <% } else if (categoryName?.includes("farms")) { %>
+              <i class="fa-solid fa-tractor"></i> Farms
+              <% } else if (categoryName?.includes("camping")) { %>
+                <i class="fa-solid fa-campground"></i> Camping
+                <% } else if (categoryName?.includes("pools")) { %>
+                  <i class="fa-solid fa-person-swimming"></i> Pools
+                  <% } else if (categoryName?.includes("castles")) { %>
+                    <i class="fa-solid fa-chess-rook"></i> Castles
+                    <% } else if (categoryName?.includes("mountains")) { %>
+                      <i class="fa-solid fa-mountain-sun"></i> Mountains
+                      <% } else { %>
+                        <i class="fa-solid fa-mountain-city"></i> Iconic Cities
+                        <% } %>
+    </h2>
+  </div>
+
+  <div class="container-fluid mt-3 px-3 px-md-4">
+    <% if (listings.length===0) { %>
+      <p class="text-muted">No listings found in this category.</p>
+      <% } else { %>
+        <div class="row ">
+          <% for (let listing of listings) { %>
+            <div class="col-sm-6 col-md-4 col-lg-2 mb-4">
+              <div class="card listing-card h-100 shadow-sm">
+                <a href="/listing/<%= listing._id %>?returnTo=<%= encodeURIComponent(returnTo) %>">
+                  <% let imageUrl; if (typeof listing.image==="string" ) { imageUrl=listing.image.trim(); } else if
+                    (listing.image && listing.image.url) { imageUrl=listing.image.url.trim(); } else {
+                    imageUrl="/images/photo-1520250497591-112f2f40a3f4.avif" ; } %>
+                    <div class="image-wrapper">
+                      <img src="<%= imageUrl %>" class="card-img-top listing-img" alt="Listing Image">
+                      <form action="/wishlist/<%= listing._id %>/add" method="POST" class="wishlist-form">
+                        <button type="submit" class="heart-btn">
+                          <i class="fa-regular fa-heart"></i>
+                        </button>
+                      </form>
+                    </div>
+                </a>
+                <div class="card-body">
+                  <p class="card-text listing-location mb-1">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <%= listing.location %>
+                      <i class="fa-regular fa-star ms-2"></i>
+                      <% if (listing.averageRating) { %>
+                        <%= listing.averageRating %>
+                          <% } else { %>
+                            No ratings yet
+                            <% } %>
+                  </p>
+                  <div class="listing-price">
+                    ₹<%= listing.price.toLocaleString("en-IN") %>/night
+                  </div>
+                </div>
+              </div>
+            </div>
+            <% } %>
+        </div>
+        <% } %>
+  </div>

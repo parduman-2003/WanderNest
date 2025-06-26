@@ -1,0 +1,103 @@
+<% layout('layouts/layout') %>
+  <link rel="stylesheet" href="/styles/notifications.css">
+  <div class="container-fluid mt-4 px-3 px-md-4">
+    <h2><i class="fa-solid fa-bell"></i> Notifications</h2>
+    <hr />
+
+
+    <ul class="nav nav-tabs mb-4" id="notificationTabs" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="bookings-tab" data-bs-toggle="tab" data-bs-target="#bookings" type="button"
+          role="tab">Bookings</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button"
+          role="tab">Reviews</button>
+      </li>
+    </ul>
+
+
+    <div class="tab-content" id="notificationTabsContent">
+
+      <div class="tab-pane fade show active mt-3 px-3 px-md-4" id="bookings" role="tabpanel" style="max-height: 450px; overflow-y: auto;  scrollbar-width: none;
+      -ms-overflow-style: none;">
+        <% if (bookings.length===0) { %>
+          <p>No bookings found.</p>
+          <% } else { %>
+            <% bookings.forEach(b=> { %>
+              <div class="card mb-3 p-3 shadow-sm">
+                <div class="d-flex gap-3">
+                  <img src="<%= b.listing.image?.url || '/default-listing.jpg' %>" alt="<%= b.listing.title %>"
+                    class="rounded" style="width: 120px; height: 80px; object-fit: cover;">
+                  <div class="flex-grow-1">
+                    <a href="/listing/<%= b.listing._id %>?returnTo=<%= encodeURIComponent(returnTo) %>"
+                      class="text-decoration-none text-dark">
+                      <h5>
+                        <%= b.listing.title %>
+                      </h5>
+                    </a>
+                    <p><strong>User:</strong>
+                      <%= b.user.username %> (<%= b.user.email %>)
+                    </p>
+                    <p><strong>Dates:</strong>
+                      <%= new Date(b.checkin).toDateString() %> to <%= new Date(b.checkout).toDateString() %>
+                    </p>
+                    <p><strong>Total:</strong> ₹<%= b.total %>
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <% }) %>
+                <% } %>
+      </div>
+
+
+      <div class="tab-pane fade  mt-3 px-3 px-md-4" id="reviews" role="tabpanel" style="max-height: 450px; overflow-y: auto; scrollbar-width: none;
+      -ms-overflow-style: none;">
+        <% if (reviews.length===0) { %>
+          <p>No reviews yet.</p>
+          <% } else { %>
+            <% reviews.forEach(review=> { %>
+              <div class="card mb-3 p-3 shadow-sm">
+                <div class="d-flex gap-3 align-items-start">
+                  <img src="<%= review.listing?.image?.url || '/default-listing.jpg' %>" alt="Listing" class="rounded"
+                    style="width: 100px; height: 80px; object-fit: cover;">
+                  <div class="flex-grow-1">
+                    <a href="/listing/<%= review.listing._id %>?returnTo=<%= encodeURIComponent(returnTo) %>"
+                      class="text-decoration-none text-dark">
+                      <h5>
+                        <%= review.listing.title %>
+                      </h5>
+                    </a>
+                    <div class="d-flex align-items-center gap-2">
+                      <% if (review.author?.profileImage?.url) { %>
+                        <img src="<%= review.author.profileImage.url %>" alt="<%= review.author.username %>'s image"
+                          style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover;">
+                        <% } else { %>
+                          <div
+                            style="width: 32px; height: 32px; border-radius: 50%; background-color: #ccc; display: flex; align-items: center; justify-content: center; font-weight: bold;">
+                            <%= review.author?.username?.charAt(0).toUpperCase() || "A" %>
+                          </div>
+                          <% } %>
+                            <strong>
+                              <%= review.author?.username || "Anonymous" %>
+                            </strong>
+                    </div>
+                    <p class="mt-2">⭐ <%= review.rating %>/5</p>
+                    <p class="comment">
+                      <%= review.comment %>
+                    </p>
+                    <small class="text-muted"><i class="fa-regular fa-calendar-days"></i>
+                      <%= new Date(review.createdAt).toDateString() %>
+                    </small>
+                  </div>
+                </div>
+              </div>
+              <% }) %>
+                <% } %>
+      </div>
+    </div>
+  </div>
+
+
+  <script src="/js/notifications.js"></script>

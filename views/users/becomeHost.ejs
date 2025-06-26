@@ -1,0 +1,91 @@
+<% layout('layouts/layout') %>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="/styles/becomeHost.css">
+  <div class="profile-container">
+    <form action="/host" method="POST" enctype="multipart/form-data">
+      <div class="profile-title">My Profile</div>
+
+
+      <div class="profile-upload-container">
+        <div class="profile-pic" id="profilePreview">
+          <% if (user?.profileImage?.url) { %>
+            <img src="<%= user.profileImage.url %>" alt="Profile Picture">
+            <% } else { %>
+              <span class="profile-initial" id="profileInitial">
+                <%= user?.username?.charAt(0).toUpperCase() || 'U' %>
+              </span>
+              <% } %>
+        </div>
+        <label for="profilePic" class="add-btn">
+          <i class="fa-solid fa-camera"></i> Add
+          <input type="file" id="profilePic" name="user[profilePic]" accept="image/*" hidden>
+        </label>
+      </div>
+
+
+      <div class="profile-section">
+        <h3>About me</h3>
+        <p>Write something fun and punchy.</p>
+        <textarea name="user[aboutMe]" rows="4" placeholder="Add intro"></textarea>
+      </div>
+
+
+      <div class="profile-section">
+        <h3>My interests</h3>
+        <p>Find common ground with other guests and hosts by adding interests to your profile.</p>
+        <input type="text" name="interests" placeholder="e.g. Hiking (only one interest)">
+      </div>
+
+
+      <div class="form-grid profile-section">
+        <div>
+          <label>Where I've always wanted to go</label>
+          <input type="text" name="user[dreamDestination]">
+        </div>
+        <div>
+          <label>My work</label>
+          <input type="text" name="user[work]">
+        </div>
+        <div>
+          <label>My favourite song in secondary school</label>
+          <input type="text" name="user[favSong]">
+        </div>
+        <div>
+          <label>Pets</label>
+          <input type="text" name="user[pets]">
+        </div>
+        <div>
+          <label>Decade I was born</label>
+          <input type="text" name="user[decadeBorn]">
+        </div>
+        <div>
+          <label>Where I went to school</label>
+          <input type="text" name="user[school]">
+        </div>
+        <div>
+          <label>My most useless skill</label>
+          <input type="text" name="user[uselessSkill]">
+        </div>
+        <div>
+          <label>I spend too much time...</label>
+          <input type="text" name="user[tooMuchTime]">
+        </div>
+        <div>
+          <label>My fun fact</label>
+          <input type="text" name="user[funFact]">
+        </div>
+        <div>
+          <label>My biography title would be</label>
+          <input type="text" name="user[bioTitle]">
+        </div>
+      </div>
+
+
+      <button class="done-btn" type="submit">Done</button>
+    </form>
+  </div>
+
+
+  <script src="/js/becomeHost.js">
+
+  </script>
