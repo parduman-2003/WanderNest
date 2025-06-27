@@ -43,61 +43,69 @@ const newRoute = (req, res) => {
   res.render("./listings/new");
 }
 
-function getAllNames(listings) {
-  const names = new Set();
-  for (let listing of listings) {
-    if (listing.country) names.add(listing.country.toLowerCase());
-    if (listing.location) names.add(listing.location.toLowerCase());
-  }
-  return Array.from(names);
-}
 const searchRoute = async (req, res) => {
   const rawQuery = req.query.q?.trim().toLowerCase() || "";
   const category = req.query.category || "";
 
   const allListings = await Listing.find({});
-  const knownNames = getAllNames(allListings);
+  let matchedListings = [];
 
-  let bestMatch = rawQuery;
-  let bestScore = 0;
+  if (!rawQuery && category) {
+    matchedListings = allListings.filter((l) =>
+      Array.isArray(l.category) && l.category.includes(category)
+    );
+    return res.render("listings/category", {
+      listings: matchedListings,
+      categoryName: category,
+      query: "",
+      returnTo: req.originalUrl,
+    });
+  }
 
-  for (let name of knownNames) {
-    const score = natural.JaroWinklerDistance(rawQuery, name);
-    if (score > bestScore) {
-      bestScore = score;
-      bestMatch = name;
+  const searchTokens = rawQuery.split(/\s+/); // split into words
+  const similarityThreshold = 0.85;
+
+  for (let listing of allListings) {
+    let combinedFields = `${listing.location || ""} ${listing.country || ""}`.toLowerCase();
+    const fieldTokens = combinedFields.split(/\s+/); // e.g., "new york usa" -> ["new", "york", "usa"]
+
+    let matchScore = 0;
+
+    for (let token of searchTokens) {
+      let bestTokenScore = 0;
+      for (let fieldWord of fieldTokens) {
+        const score = natural.JaroWinklerDistance(token, fieldWord);
+        bestTokenScore = Math.max(bestTokenScore, score);
+      }
+      matchScore += bestTokenScore;
+    }
+
+    // Normalize match score to [0,1]
+    const normalizedScore = matchScore / searchTokens.length;
+
+    if (normalizedScore >= similarityThreshold || rawQuery.length < 3) {
+      matchedListings.push(listing);
     }
   }
 
-  const regex = new RegExp(bestMatch, "i");
-
-  let matchedListings = allListings.filter(
-    (l) => regex.test(l.location) || regex.test(l.country)
-  );
-
-
+  // Category filter
   if (category) {
     matchedListings = matchedListings.filter((l) =>
       Array.isArray(l.category) && l.category.includes(category)
     );
   }
 
-  if (category) {
-    res.render("listings/category", {
-      listings: matchedListings,
-      categoryName: category,
-      query: req.query.q || "",
-      returnTo: req.originalUrl
-    });
-  } else {
-    res.render("listings/index", {
-      allListing: matchedListings,
-      query: req.query.q || "",
-      categoryName: "",
-      returnTo: req.originalUrl
-    });
-  }
-}
+  // Render view
+  const template = category ? "listings/category" : "listings/index";
+  res.render(template, {
+    listings: matchedListings,
+    allListing: matchedListings,
+    categoryName: category || "",
+    query: req.query.q || "",
+    returnTo: req.originalUrl,
+  });
+};
+
 const showRoute = async (req, res, next) => {
   try {
     const { id } = req.params;

@@ -24,8 +24,7 @@
             <button type="submit" class="btn btn-pink ms-2">Search</button>
       </form>
     </div>
-
-   
+ 
     <div class="d-flex align-items-center position-relative">
       <% if (currentUser && !currentUser.isHost) { %>
         <div class="settings-dropdown position-relative ms-3">
@@ -39,6 +38,17 @@
           
         </div>
         <% } %>
+        <!-- Mobile Hamburger Icon (only if user is not logged in) -->
+<% if (!currentUser && !hideAuthButtons) { %>
+  <div class="d-md-none ms-2 position-relative">
+    <i class="fa-solid fa-bars settings-icon" id="mobileMenuToggle"></i>
+    <div class="dropdown-menu" id="mobileDropdownMenu">
+      <a href="/signUp" class="dropdown-item">Sign Up</a>
+      <a href="/login" class="dropdown-item">Login</a>
+    </div>
+  </div>
+<% } %>
+
       <% if (!currentUser && !hideAuthButtons) { %>
         <a href="/signUp" class="me-2">
           <button class="signup-btn" type="button">Sign Up</button>
@@ -67,7 +77,38 @@
               <% } %>
                 <% } %>
     </div>
+    
   </div>
+   <!-- Mobile Filter + Search Bar Row (Mobile only) -->
+<div class="d-flex d-md-none align-items-center justify-content-between gap-2 px-3 py-2 bg-white border-bottom sticky-top z-3" style="top: 56px;"> <!-- Adjust top if navbar height differs -->
+  
+  <!-- Filter Dropdown -->
+  <div class="dropdown my-0">
+    <button class="btn  dropdown-toggle" type="button" id="filterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+      <i class="fa-solid fa-sliders"></i>
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="filterDropdown">
+      <li><a class="dropdown-item filter" data-category="trending" href="#"><i class="fa-solid fa-fire me-2"></i>Trending</a></li>
+      <li><a class="dropdown-item filter" data-category="rooms" href="#"><i class="fa-solid fa-bed me-2"></i>Rooms</a></li>
+      <li><a class="dropdown-item filter" data-category="iconic-cities" href="#"><i class="fa-solid fa-mountain-city me-2"></i>Iconic Cities</a></li>
+      <li><a class="dropdown-item filter" data-category="mountains" href="#"><i class="fa-solid fa-mountain-sun me-2"></i>Mountains</a></li>
+      <li><a class="dropdown-item filter" data-category="castles" href="#"><i class="fa-solid fa-chess-rook me-2"></i>Castles</a></li>
+      <li><a class="dropdown-item filter" data-category="pools" href="#"><i class="fa-solid fa-person-swimming me-2"></i>Pools</a></li>
+      <li><a class="dropdown-item filter" data-category="camping" href="#"><i class="fa-solid fa-campground me-2"></i>Camping</a></li>
+      <li><a class="dropdown-item filter" data-category="farms" href="#"><i class="fa-solid fa-tractor me-2"></i>Farms</a></li>
+      <li><a class="dropdown-item filter" data-category="arctic" href="#"><i class="fa-solid fa-snowflake me-2"></i>Arctic</a></li>
+    </ul>
+  </div>
+
+  <!-- Mobile Search Bar -->
+  <form action="/listing/search" method="get" class="d-flex flex-grow-1">
+    <input type="text" name="q" class="form-control me-2" placeholder="Search..." required>
+    <% if (categoryName) { %>
+      <input type="hidden" name="category" value="<%= categoryName %>">
+    <% } %>
+    <button type="submit" class="btn btn-pink"><i class="fa-solid fa-magnifying-glass" style="color:white"></i></button>
+  </form>
+</div>
 </nav>
 
 

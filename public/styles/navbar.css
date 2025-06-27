@@ -8,6 +8,60 @@
   gap: 0.5rem;
   text-decoration: none;
 }
+#mobileDropdownMenu {
+  display: none;
+  position: absolute;
+  top: 40px;
+  right: 0;
+  background-color: white;
+  border: 1px solid #ccc;
+  z-index: 10;
+  min-width: 120px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.settings-icon {
+  cursor: pointer;
+  font-size: 1.3rem;
+}
+@media (max-width: 768px) {
+  .form-control {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.6rem;
+  }
+
+  .btn-pink {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+  }
+}
+@media (max-width: 768px) {
+  .btn-pink {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+  }
+
+  .form-control {
+    font-size: 0.9rem;
+    padding: 0.45rem 0.6rem;
+  }
+
+  .dropdown .btn {
+    font-size: 0.9rem;
+    padding: 0.45rem 0.6rem;
+  }
+
+  .sticky-top.z-3 {
+    z-index: 1030; /* above normal content but below modals */
+  }
+}
+
+/* Responsive hiding and showing logic */
+@media (max-width: 768px) {
+  .signup-btn {
+    display: none !important;
+  }
+}
 
 .wander-logo i {
   color: #FF385C;

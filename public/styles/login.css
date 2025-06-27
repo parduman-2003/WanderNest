@@ -1,6 +1,19 @@
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: white;
+}
+
 .signup-heading {
   font-family: 'Poppins', sans-serif;
   margin-bottom: 1.5rem;
+}
+
+.signup-heading h3 {
+  text-align: center;
+  color: #FF385C;
+  font-size: 28px;
+  margin-bottom: 20px;
 }
 
 .wander-logo {
@@ -14,28 +27,6 @@
 
 .logo-text {
   letter-spacing: 1px;
-}
-
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: white;
-}
-
-.signup-form-container {
-  background: #ffffff;
-  padding: 40px;
-  border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-  width: 100%;
-  max-width: 500px;
-  margin: 40px auto;
-}
-
-.signup-heading h3 {
-  text-align: center;
-  color: #FF385C;
-  font-size: 28px;
-  margin-bottom: 20px;
 }
 
 .form-group {
@@ -65,23 +56,6 @@ input:focus {
   box-shadow: 0 0 0 2px rgba(255, 56, 92, 0.1);
 }
 
-.signup-btn {
-  width: 100%;
-  padding: 12px;
-  background-color: #FF385C;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
-}
-
-.signup-btn:hover {
-  background-color: #e03155;
-}
-
 .invalid-feedback,
 .valid-feedback {
   font-size: 13px;
@@ -89,14 +63,19 @@ input:focus {
   margin-top: 4px;
 }
 
-input:invalid+.invalid-feedback {
+input:invalid + .invalid-feedback {
   display: block;
   color: red;
 }
 
-input:valid+.valid-feedback {
+input:valid + .valid-feedback {
   display: block;
   color: green;
+}
+
+
+.signup-btn:hover {
+  background-color: #e03155;
 }
 
 a {
@@ -108,13 +87,46 @@ a {
 a:hover {
   text-decoration: underline;
 }
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
 
-@media (max-width: 600px) {
+.signup-form-container {
+  background: #ffffff;
+  padding: 40px 30px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  max-width: 500px;
+  margin: 40px auto;
+  height: auto;            
+  box-sizing: border-box; 
+}
+
+.signup-btn {
+  width:100%;
+  padding: 12px;
+  font-size: 16px;
+  background-color: #FF385C;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+@media (max-width: 768px) {
   .signup-form-container {
-    padding: 25px;
+    padding: 1rem 0.8rem;
+    margin: 1.5rem auto;
   }
 
   .signup-btn {
     font-size: 15px;
+    padding: 12px;
   }
 }

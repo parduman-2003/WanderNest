@@ -21,3 +21,21 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 });
+document.addEventListener("DOMContentLoaded", function () {
+    const toggle = document.getElementById("mobileMenuToggle");
+    const menu = document.getElementById("mobileDropdownMenu");
+  
+    if (toggle) {
+      toggle.addEventListener("click", () => {
+        menu.style.display = menu.style.display === "block" ? "none" : "block";
+      });
+  
+      // Optional: Hide when clicking outside
+      document.addEventListener("click", (e) => {
+        if (!menu.contains(e.target) && e.target !== toggle) {
+          menu.style.display = "none";
+        }
+      });
+    }
+  });
+  
